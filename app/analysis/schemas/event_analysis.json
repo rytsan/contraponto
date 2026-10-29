@@ -1,0 +1,488 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contraponto.local/schemas/event_analysis.json",
+  "title": "ConsolidatedEventDossier",
+  "description": "Schema obrigatório do Dossiê de Contradição Consolidado e sub-schema da Etapa 3.2.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "factual_anchor",
+    "theme",
+    "location",
+    "coordinates",
+    "coverage_pairs",
+    "actors",
+    "marxist_leninist_analysis",
+    "reader_questions",
+    "data_visualizations",
+    "confidence"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "is_demo": {
+      "type": "boolean"
+    },
+    "factual_anchor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "economia",
+        "trabalho",
+        "terra_e_agronegocio",
+        "politica_institucional",
+        "seguranca_e_estado",
+        "politica_externa",
+        "meio_ambiente",
+        "cultura",
+        "saude_educacao",
+        "outros"
+      ]
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "coordinates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "properties": {
+        "lat": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "lon": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "coverage_pairs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/coverage_pair"
+      }
+    },
+    "actors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/actor"
+      }
+    },
+    "marxist_leninist_analysis": {
+      "$ref": "#/$defs/marxist_leninist_analysis"
+    },
+    "reader_questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "data_visualizations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/data_visualization"
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "audit_metadata": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "$defs": {
+    "coverage_pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "article_id",
+        "source",
+        "source_position",
+        "url",
+        "headline",
+        "central_thesis",
+        "valued_actors",
+        "devalued_actors",
+        "ideological_vocabulary",
+        "privileged_sources",
+        "likely_omissions",
+        "state_framing",
+        "market_framing",
+        "labor_framing",
+        "protest_framing",
+        "political_effect",
+        "evidence_quotes"
+      ],
+      "properties": {
+        "article_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_position": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "central_thesis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "valued_actors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "devalued_actors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ideological_vocabulary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "privileged_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "likely_omissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "state_framing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market_framing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "labor_framing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protest_framing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "political_effect": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_quotes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "quote",
+              "context",
+              "verified"
+            ],
+            "properties": {
+              "quote": {
+                "type": "string",
+                "minLength": 1
+              },
+              "context": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verified": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "role",
+        "material_interest",
+        "relations"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "trabalhador",
+            "empresa",
+            "estado",
+            "veiculo",
+            "sindicato",
+            "movimento_popular",
+            "instituicao",
+            "outro"
+          ]
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "material_interest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "relation",
+              "evidence"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "controla",
+                  "financia",
+                  "cita",
+                  "enquadra",
+                  "resiste",
+                  "regula",
+                  "reprime",
+                  "lucra",
+                  "organiza"
+                ]
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "marxist_leninist_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "central_contradiction",
+        "class_relations",
+        "property_and_power",
+        "role_of_state",
+        "imperialism_or_dependency",
+        "ideology_and_naturalization",
+        "hegemony_and_silenced_voices",
+        "forms_of_struggle",
+        "immediate_demand",
+        "strategic_perspective",
+        "limitations_and_uncertainty"
+      ],
+      "properties": {
+        "central_contradiction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "class_relations": {
+          "type": "string",
+          "minLength": 1
+        },
+        "property_and_power": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role_of_state": {
+          "type": "string",
+          "minLength": 1
+        },
+        "imperialism_or_dependency": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ideology_and_naturalization": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hegemony_and_silenced_voices": {
+          "type": "string",
+          "minLength": 1
+        },
+        "forms_of_struggle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "immediate_demand": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strategic_perspective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations_and_uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "data_visualization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "type",
+        "description",
+        "labels",
+        "values",
+        "source_article_ids"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "bar",
+            "line",
+            "radar",
+            "timeline"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "source_article_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "llm_consolidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "factual_anchor",
+        "actors",
+        "marxist_leninist_analysis",
+        "reader_questions",
+        "data_visualizations",
+        "confidence"
+      ],
+      "properties": {
+        "factual_anchor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/actor"
+          }
+        },
+        "marxist_leninist_analysis": {
+          "$ref": "#/$defs/marxist_leninist_analysis"
+        },
+        "reader_questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "data_visualizations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/data_visualization"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    }
+  }
+}

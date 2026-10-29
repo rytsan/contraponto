@@ -1,0 +1,28 @@
+services:
+  llama-server:
+    image: ghcr.io/ggerganov/llama.cpp:server
+    container_name: contraponto-llama-server
+    profiles:
+      - llm
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/models:ro
+    command: >
+      -m /models/${LLAMA_CPP_MODEL_FILE:-Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf}
+      -c ${LLAMA_CPP_NUM_CTX:-8192}
+      --host 0.0.0.0
+      --port 8080
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: contraponto-qdrant
+    profiles:
+      - vector
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+    restart: unless-stopped

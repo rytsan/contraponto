@@ -1,0 +1,180 @@
+sources:
+  - id: folha_sp
+    nome: "Folha de S.Paulo"
+    url_rss: "https://feeds.folha.uol.com.br/poder/rss091.xml"
+    categoria_editorial: "grande_midia_liberal"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Liberalismo político e econômico institucional, pluralismo moderado de mercado"
+    descricao: "Jornal diário de grande circulação sediado em São Paulo, pertencente ao Grupo Folha."
+
+  - id: estadao
+    nome: "O Estado de S. Paulo"
+    url_rss: "https://www.estadao.com.br/arc/outboundfeeds/rss/category/politica/" # feed a verificar
+    categoria_editorial: "grande_midia_liberal"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Liberal-conservador, defesa da livre iniciativa, responsabilidade fiscal e propriedade privada"
+    descricao: "Jornal tradicional paulista do Grupo Estado, alinhado historicamente ao liberalismo econômico e conservadorismo institucional."
+
+  - id: o_globo
+    nome: "O Globo"
+    url_rss: "https://oglobo.globo.com/rss/oglobo"
+    categoria_editorial: "grande_midia_liberal"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Liberalismo econômico e institucionalismo de centro-direita"
+    descricao: "Principal jornal impresso e digital do Grupo Globo, sediado no Rio de Janeiro."
+
+  - id: uol_noticias
+    nome: "UOL Notícias"
+    url_rss: "https://rss.uol.com.br/feed/noticias.xml"
+    categoria_editorial: "grande_midia_liberal"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Jornalismo comercial mainstream de matriz liberal"
+    descricao: "Portal de notícias brasileiro de grande audiência pertencente ao Grupo Folha."
+
+  - id: gazeta_do_povo
+    nome: "Gazeta do Povo"
+    url_rss: "https://www.gazetadopovo.com.br/feed/rss/republica.xml"
+    categoria_editorial: "grande_midia_liberal"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Conservadorismo social e liberalismo econômico de livre mercado"
+    descricao: "Veículo paranaense do GRPCOM com linha editorial explicitamente conservadora e liberal econômica."
+
+  - id: cnn_brasil
+    nome: "CNN Brasil"
+    url_rss: "https://www.cnnbrasil.com.br/feed/"
+    categoria_editorial: "grande_midia_liberal"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Jornalismo comercial corporativo e institucionalismo liberal"
+    descricao: "Canal e portal de notícias licenciado da marca CNN no Brasil."
+
+  - id: agencia_brasil
+    nome: "Agência Brasil (EBC)"
+    url_rss: "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml"
+    categoria_editorial: "estatal_institucional"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Comunicação pública estatal e cobertura oficial das instituições da República"
+    descricao: "Agência pública de notícias gerida pela Empresa Brasil de Comunicação (EBC)."
+
+  - id: brasil_de_fato
+    nome: "Brasil de Fato"
+    url_rss: "https://www.brasildefato.com.br/rss2.xml"
+    categoria_editorial: "imprensa_popular_sindical_esquerda"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Visão popular da notícia, campo democrático-popular e movimentos sociais"
+    descricao: "Veículo de comunicação lançado por movimentos populares no Fórum Social Mundial."
+
+  - id: brasil_wire
+    nome: "Brasil Wire"
+    url_rss: "https://www.brasilwire.com/feed/"
+    categoria_editorial: "imprensa_popular_sindical_esquerda"
+    pais: "BR"
+    idioma: "en"
+    posicao_editorial_declarada: "Anti-imperialista, crítica à hegemonia midiática corporativa sobre o Brasil"
+    descricao: "Coletivo editorial dedicado à análise crítica da política brasileira e relações internacionais em língua inglesa."
+
+  - id: esquerda_diario
+    nome: "Esquerda Diário"
+    url_rss: "https://www.esquerdadiario.com.br/spip.php?page=backend"
+    categoria_editorial: "imprensa_popular_sindical_esquerda"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Socialista revolucionária e classista (MRT / Rede Internacional La Izquierda Diario)"
+    descricao: "Jornal digital diário impulsionado pelo Movimento Revolucionário de Trabalhadores (MRT) e apoiadores."
+
+  - id: cut_brasil
+    nome: "CUT — Central Única dos Trabalhadores"
+    url_rss: "https://www.cut.org.br/rss" # feed a verificar
+    categoria_editorial: "imprensa_popular_sindical_esquerda"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Sindicalismo classista, defesa dos direitos trabalhistas e serviços públicos"
+    descricao: "Portal oficial de comunicação da Central Única dos Trabalhadores no Brasil."
+
+  - id: mst
+    nome: "MST — Movimento dos Trabalhadores Rurais Sem Terra"
+    url_rss: "https://mst.org.br/feed/"
+    categoria_editorial: "imprensa_popular_sindical_esquerda"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Reforma agrária popular, soberania alimentar, agroecologia e socialismo"
+    descricao: "Página oficial do Movimento dos Trabalhadores Rurais Sem Terra."
+
+  - id: jornal_a_verdade
+    nome: "Jornal A Verdade"
+    url_rss: "https://averdade.org.br/feed/" # feed a verificar
+    categoria_editorial: "imprensa_popular_sindical_esquerda"
+    pais: "BR"
+    idioma: "pt"
+    posicao_editorial_declarada: "Imprensa popular e revolucionária marxista-leninista, ligada à luta dos trabalhadores (UP/PCR)"
+    descricao: "Jornal de trabalhadores editado militante e coletivamente no Brasil com foco nas lutas operárias, estudantis e populares."
+
+  - id: peoples_dispatch
+    nome: "Peoples Dispatch"
+    url_rss: "https://peoplesdispatch.org/feed/"
+    categoria_editorial: "internacional"
+    pais: "INT"
+    idioma: "en"
+    posicao_editorial_declarada: "Internacionalismo popular, anti-imperialismo e cobertura de movimentos do Sul Global"
+    descricao: "Projeto midiático internacional voltado a movimentos sociais, sindicais e populares ao redor do mundo."
+
+  - id: granma
+    nome: "Granma"
+    url_rss: "https://www.granma.cu/feed" # feed a verificar
+    categoria_editorial: "internacional"
+    pais: "CU"
+    idioma: "es"
+    posicao_editorial_declarada: "Órgão oficial do Comitê Central do Partido Comunista de Cuba (marxista-leninista e martiano)"
+    descricao: "Diário oficial cubano com cobertura nacional e internacional sob perspectiva socialista."
+
+  - id: morning_star
+    nome: "Morning Star"
+    url_rss: "https://morningstaronline.co.uk/rss.xml"
+    categoria_editorial: "internacional"
+    pais: "GB"
+    idioma: "en"
+    posicao_editorial_declarada: "Socialista, trabalhista e anti-imperialista ('For Peace and Socialism')"
+    descricao: "Diário socialista britânico mantido por cooperativa de leitores e sindicatos."
+
+  - id: telesur
+    nome: "teleSUR"
+    url_rss: "https://www.telesurtv.net/feed/"
+    categoria_editorial: "internacional"
+    pais: "VE"
+    idioma: "es"
+    posicao_editorial_declarada: "Integração latino-americana e contra-hegemonia comunicacional do Sul Global"
+    descricao: "Rede de televisão e portal multiestatal latino-americano sediado em Caracas."
+
+  - id: al_jazeera
+    nome: "Al Jazeera English"
+    url_rss: "https://www.aljazeera.com/xml/rss/all.xml"
+    categoria_editorial: "internacional"
+    pais: "QA"
+    idioma: "en"
+    posicao_editorial_declarada: "Jornalismo internacional multipolar com foco no Oriente Médio e Sul Global"
+    descricao: "Rede internacional de notícias sediada em Doha, Catar."
+
+  - id: reuters_world
+    nome: "Reuters"
+    url_rss: "https://feeds.reuters.com/Reuters/worldNews" # feed a verificar
+    categoria_editorial: "internacional"
+    pais: "GB"
+    idioma: "en"
+    posicao_editorial_declarada: "Agência internacional corporativa voltada ao mercado financeiro e governos ocidentais"
+    descricao: "Uma das maiores agências globais de notícias e informações financeiras (Thomson Reuters)."
+
+  - id: associated_press
+    nome: "Associated Press (AP)"
+    url_rss: "https://apnews.com/hub/world-news.rss" # feed a verificar
+    categoria_editorial: "internacional"
+    pais: "US"
+    idioma: "en"
+    posicao_editorial_declarada: "Agência cooperativa comercial norte-americana de linha liberal mainstream"
+    descricao: "Agência de notícias sediada nos Estados Unidos com ampla distribuição global."

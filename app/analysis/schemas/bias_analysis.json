@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contraponto.local/schemas/bias_analysis.json",
+  "title": "BiasAnalysisLLMOutput",
+  "description": "Schema estruturado da Etapa 3.1 — Análise de viés por matéria individual.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "central_thesis",
+    "valued_actors",
+    "devalued_actors",
+    "ideological_vocabulary",
+    "privileged_sources",
+    "likely_omissions",
+    "state_framing",
+    "market_framing",
+    "labor_framing",
+    "protest_framing",
+    "political_effect",
+    "evidence_quotes"
+  ],
+  "properties": {
+    "central_thesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "valued_actors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "devalued_actors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ideological_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "privileged_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "likely_omissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "state_framing": {
+      "type": "string",
+      "minLength": 1
+    },
+    "market_framing": {
+      "type": "string",
+      "minLength": 1
+    },
+    "labor_framing": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protest_framing": {
+      "type": "string",
+      "minLength": 1
+    },
+    "political_effect": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_quotes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "quote",
+          "context"
+        ],
+        "properties": {
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          },
+          "context": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

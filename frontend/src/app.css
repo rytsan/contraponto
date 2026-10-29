@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0d0d0d;
+  --text-primary: #f4f1ea;
+  --accent-crimson: #9e1b1b;
+  --accent-amber: #e5a93c;
+  --meta-gray: #9ca3af;
+}
+
+html,
+body {
+  background-color: #0d0d0d;
+  color: #f4f1ea;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Transições editoriais discretas respeitando prefers-reduced-motion */
+.scene-transition {
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after,
+  .scene-transition {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Estilo dedicado de impressão / exportação PDF (@media print) */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-all-scenes {
+    display: block !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .print-scene-section {
+    display: block !important;
+    page-break-after: always;
+    break-after: page;
+    border-bottom: 2px solid #9e1b1b;
+    padding: 1.5rem 0;
+    color: #111111 !important;
+    background: #ffffff !important;
+  }
+}

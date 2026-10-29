@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Voz Operária Demo (Fictício)</title>
+    <link>https://vozoperaria.demo.local</link>
+    <description>Feed de teste sintético — linha editorial popular e sindical fictícia</description>
+    <language>pt-br</language>
+
+    <item>
+      <title>Trabalhadores do transporte em São Paulo cruzam os braços contra terceirização e arrocho salarial</title>
+      <link>https://vozoperaria.demo.local/lutas/greve-transporte-sp?gclid=abc999</link>
+      <guid isPermaLink="false">guid-voz-operaria-greve-sp-001</guid>
+      <pubDate>Wed, 28 Oct 2026 10:45:00 GMT</pubDate>
+      <author>Coletivo Sindical Demo</author>
+      <description>Assembleia massiva aprovou greve unificada diante da precarização das condições de trabalho e dos lucros recordes das concessionárias.</description>
+      <content:encoded><![CDATA[
+        <p>Em assembleia histórica com milhares de trabalhadores na capital paulista, o Sindicato dos Metroviários e a Central Única dos Trabalhadores (CUT) decretaram greve por tempo indeterminado em São Paulo contra o avanço das terceirizações, a sobrecarga de jornada e a defasagem salarial acumulada.</p>
+        <p>Os operários denunciam que, enquanto as empresas concessionárias privadas remetem centenas de milhões de reais em dividendos aos acionistas e contam com subsídios estatais garantidos pelo governo Tarcísio de Freitas, a manutenção preventiva dos trens e ônibus vem sendo sucateada, colocando em risco a vida da população trabalhadora que depende do transporte público.</p>
+        <p>Mesmo diante das multas milionárias impostas pela Justiça do Trabalho e do aparato policial mobilizado nas estações, piquetes organizados pela base mantiveram a paralisação e receberam apoio de movimentos populares como o MTST em defesa de tarifa zero e reestatização sob controle público e social.</p>
+      ]]></content:encoded>
+    </item>
+  </channel>
+</rss>

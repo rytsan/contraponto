@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Diário Mercantil Demo (Fictício)</title>
+    <link>https://diariomercantil.demo.local</link>
+    <description>Feed de teste sintético — linha editorial liberal fictícia</description>
+    <language>pt-br</language>
+
+    <item>
+      <title>Paralisação no transporte público de São Paulo afeta comércio e gera reação patronal</title>
+      <link>https://diariomercantil.demo.local/economia/greve-transporte-sp?utm_source=rss&amp;utm_medium=feed&amp;fbclid=12345#topo</link>
+      <guid isPermaLink="false">guid-mercantil-greve-sp-001</guid>
+      <pubDate>Wed, 28 Oct 2026 10:00:00 GMT</pubDate>
+      <author>Redação Econômica Demo</author>
+      <description>Associações comerciais calculam prejuízos milionários com a interrupção das linhas de ônibus e metrô na capital paulista.</description>
+      <content:encoded><![CDATA[
+        <p>A paralisação decretada pelo Sindicato dos Metroviários e motoristas em São Paulo provocou filas e atrasos severos no deslocamento matinal desta quarta-feira. Segundo estimativas preliminares de federações empresariais como a FIESP, o setor de comércio e serviços pode registrar perdas superiores a R$ 120 milhões caso o movimento paredista se estenda pelos próximos dias.</p>
+        <p>Porta-vozes das concessionárias privadas afirmaram que o reajuste pleiteado pelas categorias compromete o equilíbrio econômico-financeiro dos contratos de concessão e pressiona as tarifas públicas. O governo estadual acionou o Tribunal Regional do Trabalho pedindo a manutenção mínima de 80% da frota em circulação sob pena de multa diária de R$ 500 mil às entidades sindicais.</p>
+        <p>Analistas do mercado financeiro ouvidos pela reportagem avaliam que a resistência às terceirizações trava a modernização operacional do sistema viário metropolitano e gera insegurança jurídica para novos leilões de infraestrutura urbana.</p>
+      ]]></content:encoded>
+    </item>
+
+    <item>
+      <title>Artigo curto sem conteúdo completo no RSS para testar extração via Trafilatura</title>
+      <link>https://diariomercantil.demo.local/politica/artigo-trafilatura?utm_campaign=test</link>
+      <guid isPermaLink="false">guid-mercantil-trafilatura-002</guid>
+      <pubDate>Wed, 28 Oct 2026 11:30:00 GMT</pubDate>
+      <author>Colunista Demo</author>
+      <description>Resumo curto presente no feed RSS aguardando extração da página HTML completa.</description>
+    </item>
+
+    <item>
+      <title>Análise exclusiva bloqueada por paywall para testar política de fallback</title>
+      <link>https://diariomercantil.demo.local/economia/analise-paywall</link>
+      <guid isPermaLink="false">guid-mercantil-paywall-003</guid>
+      <pubDate>Wed, 28 Oct 2026 12:00:00 GMT</pubDate>
+      <author>Editoria Financeira Demo</author>
+      <description>Resumo público do RSS sobre metas fiscais e juros básicos que deve ser mantido quando houver paywall.</description>
+    </item>
+  </channel>
+</rss>

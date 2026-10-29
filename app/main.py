@@ -8,7 +8,7 @@ from app.config import settings
 from app.database import get_db, init_db
 from app.models import Source
 from app.schemas import HealthResponse
-from app.scheduler import get_scheduler_status
+from app.scheduler import get_scheduler_status, start_scheduler, stop_scheduler
 from app.analysis.llm_client import LlamaCppClient
 from app.api.routes_analysis import get_llm_client, router as analysis_router
 from app.api.routes_articles import router as articles_router
@@ -19,9 +19,13 @@ from app.api.routes_sources import router as sources_router
 
 @asynccontextmanager
 async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
-    """Inicializa estrutura do banco de dados no ciclo de vida da aplicação."""
+    """Inicializa estrutura do banco de dados e agendador periódico no ciclo de vida da aplicação."""
     init_db()
-    yield
+    start_scheduler()
+    try:
+        yield
+    finally:
+        stop_scheduler()
 
 
 app = FastAPI(

@@ -6,7 +6,8 @@
 node_modules/
 frontend/.svelte-kit/
 frontend/build/
-output/
+output/*
+!output/.gitkeep
 __pycache__/
 *.py[cod]
 *$py.class

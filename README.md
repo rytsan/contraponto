@@ -172,6 +172,22 @@ Nenhum teste acessa a internet ou exige `llama-server`/`Qdrant` reais:
 pytest -q
 ```
 
+### 6.6. Endpoints Obrigatórios da API
+
+| Método | Rota | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/health` | Status do banco, `llama-server` (`/health` e `/props`), Qdrant (`disabled` se desligado), agendador e última coleta por fonte |
+| `GET` | `/articles` | Lista paginada (`limit`, `offset`) com filtros `source`, `theme`, `event_id`, `start_date`, `end_date` |
+| `GET` | `/articles/{id}` | Artigo completo com texto limpo e metadados |
+| `GET` | `/sources` | Lista fontes RSS cadastradas |
+| `POST` | `/sources` | Cadastra nova fonte RSS no SQLite e em `data/sources.yaml` |
+| `GET` | `/events` | Lista eventos agrupados (auto-popula seed sintético `DEMO` caso o banco esteja vazio) |
+| `GET` | `/events/{id}` | Evento, matérias vinculadas e dossiê (se existir) |
+| `POST` | `/events/{id}/analyze` | Inicia job assíncrono retomável via `BackgroundTasks` (`HTTP 202` com `status="queued"`) |
+| `GET` | `/events/{id}/analysis-status` | Progresso em tempo real (`queued \| running \| completed \| failed`, `stage`, `articles_done`, `articles_total`) |
+| `GET` | `/events/{id}/dossier` | Contrato completo do Dossiê de Contradição com citações verificadas e `confidence` recalculado |
+| `GET` | `/events/{id}/export?format=markdown\|json` | Exporta o dossiê completo em Markdown ou JSON |
+
 ---
 
 ## 7. Como Validar e Adicionar Fontes RSS (`sources_loader --check`)

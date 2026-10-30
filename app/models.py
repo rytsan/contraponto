@@ -251,3 +251,31 @@ class AnalysisJob(Base):
     )
 
     event_rel: Mapped["Event"] = relationship("Event", back_populates="analysis_jobs")
+
+
+class PresentationDeck(Base):
+    """Roteiro de apresentação para Modo Estúdio (ensaios) e Modo Live (OBS)."""
+
+    __tablename__ = "presentation_decks"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=new_uuid)
+    titulo: Mapped[str] = mapped_column(String(512), nullable=False)
+    modo: Mapped[str] = mapped_column(String(32), nullable=False, default="ensaio", index=True)
+    event_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("events.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    kpis: Mapped[List[Dict[str, Any]]] = mapped_column(JSON, nullable=False, default=list)
+    slides: Mapped[List[Dict[str, Any]]] = mapped_column(JSON, nullable=False, default=list)
+    charts: Mapped[List[Dict[str, Any]]] = mapped_column(JSON, nullable=False, default=list)
+    ticker_items: Mapped[List[str]] = mapped_column(JSON, nullable=False, default=list)
+    is_demo: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    criado_em: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=utcnow)
+    atualizado_em: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=utcnow,
+        onupdate=utcnow,
+    )

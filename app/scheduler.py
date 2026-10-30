@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -9,23 +10,25 @@ from app.clustering.event_clusterer import EventClusterer
 _scheduler: Optional[BackgroundScheduler] = None
 _last_run_at: Optional[datetime] = None
 _last_run_summary: Dict[str, Any] = {}
+_collect_lock = threading.Lock()
 
 
 def run_collection_and_clustering_cycle() -> Dict[str, Any]:
-    """Executa um ciclo completo de coleta RSS e agrupamento de eventos."""
+    """Executa um ciclo completo de coleta RSS e agrupamento de eventos de forma thread-safe."""
     global _last_run_at, _last_run_summary
-    with SessionLocal() as db:
-        collector = RSSCollector(db=db)
-        new_articles = collector.collect_all_sources()
-        clusterer = EventClusterer(db=db)
-        events = clusterer.cluster_articles()
-        _last_run_at = datetime.now(timezone.utc)
-        _last_run_summary = {
-            "last_run_at": _last_run_at.isoformat(),
-            "new_articles_count": len(new_articles),
-            "events_count": len(events),
-        }
-        return _last_run_summary
+    with _collect_lock:
+        with SessionLocal() as db:
+            collector = RSSCollector(db=db)
+            new_articles = collector.collect_all_sources()
+            clusterer = EventClusterer(db=db)
+            events = clusterer.cluster_articles()
+            _last_run_at = datetime.now(timezone.utc)
+            _last_run_summary = {
+                "last_run_at": _last_run_at.isoformat(),
+                "new_articles_count": len(new_articles),
+                "events_count": len(events),
+            }
+            return dict(_last_run_summary)
 
 
 def start_scheduler() -> BackgroundScheduler:

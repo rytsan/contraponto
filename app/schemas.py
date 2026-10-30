@@ -1,6 +1,7 @@
+import re
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 ThemeLiteral = Literal[
@@ -380,3 +381,155 @@ class HealthResponse(BaseModel):
     qdrant: Dict[str, Any]
     scheduler: Dict[str, Any]
     sources_last_collection: Dict[str, Optional[str]]
+
+
+DeckModeLiteral = Literal["ensaio", "live"]
+
+_SAFE_COLOR_RE = re.compile(r"^(var\(--[a-zA-Z0-9_-]+\)|#[0-9a-fA-F]{3,8}|crimson|amber|cyan|dim|lime|white)$")
+_SAFE_HTTP_URL_RE = re.compile(r"^https?://", re.IGNORECASE)
+
+
+def _sanitize_css_color(val: str, default: str = "var(--amber)") -> str:
+    cleaned = (val or "").strip()
+    return cleaned if _SAFE_COLOR_RE.match(cleaned) else default
+
+
+class DeckKPI(BaseModel):
+    """Indicador superior da barra de broadcast."""
+
+    label: str = Field(default="", max_length=120)
+    value: str = Field(default="", max_length=120)
+    color: str = Field(default="var(--amber)", max_length=64)
+
+    @field_validator("color")
+    @classmethod
+    def validate_color(cls, v: str) -> str:
+        return _sanitize_css_color(v, "var(--amber)")
+
+
+class DeckSlideLink(BaseModel):
+    """Link de fonte exibido na coluna lateral do slide."""
+
+    label: str = Field(default="", max_length=200)
+    url: str = Field(default="", max_length=1024)
+
+    @field_validator("url")
+    @classmethod
+    def validate_http_url(cls, v: str) -> str:
+        cleaned = (v or "").strip()
+        if not cleaned or cleaned in ("https://", "http://"):
+            return ""
+        if not _SAFE_HTTP_URL_RE.match(cleaned):
+            raise ValueError("URL do link deve usar http:// ou https://")
+        return cleaned
+
+
+class DeckSlide(BaseModel):
+    """Slide/capítulo individual do Modo Estúdio e Modo Live."""
+
+    shortDate: str = Field(default="Capítulo", max_length=60)
+    timestamp: str = Field(default="", max_length=160)
+    title: str = Field(default="Sem título", max_length=512)
+    summary: str = Field(default="")
+    summary2: str = Field(default="")
+    deep: str = Field(default="")
+    code: str = Field(default="")
+    nuance_notes: str = Field(default="")
+    metricLabel: str = Field(default="INDICADOR CHAVE", max_length=120)
+    metricVal: str = Field(default="—", max_length=80)
+    metricColor: str = Field(default="var(--amber)", max_length=64)
+    metricSub: str = Field(default="")
+    specs: List[List[str]] = Field(default_factory=list)
+    links: List[DeckSlideLink] = Field(default_factory=list)
+
+    @field_validator("metricColor")
+    @classmethod
+    def validate_metric_color(cls, v: str) -> str:
+        return _sanitize_css_color(v, "var(--amber)")
+
+
+class DeckChartRow(BaseModel):
+    """Barra comparativa dentro de um card do painel gráfico [G]."""
+
+    label: str = Field(default="", max_length=160)
+    pct: float = Field(default=50.0, ge=0.0, le=100.0)
+    displayValue: str = Field(default="", max_length=80)
+    color: str = Field(default="amber", max_length=64)
+
+    @field_validator("color")
+    @classmethod
+    def validate_row_color(cls, v: str) -> str:
+        return _sanitize_css_color(v, "amber")
+
+
+class DeckChartCard(BaseModel):
+    """Coluna do overlay de 3 composições gráficas [G]."""
+
+    title: str = Field(default="", max_length=200)
+    subtitle: str = Field(default="")
+    rows: List[DeckChartRow] = Field(default_factory=list)
+    footerTitle: str = Field(default="")
+    footerText: str = Field(default="")
+
+
+class DeckCreateUpdate(BaseModel):
+    """Payload de criação ou atualização de um ensaio ou pauta ao vivo."""
+
+    titulo: str = Field(default="Roteiro sem título", max_length=512)
+    modo: DeckModeLiteral = "ensaio"
+    event_id: Optional[str] = None
+    kpis: List[DeckKPI] = Field(default_factory=list)
+    slides: List[DeckSlide] = Field(default_factory=list)
+    charts: List[DeckChartCard] = Field(default_factory=list)
+    ticker_items: List[str] = Field(default_factory=list)
+
+
+class DeckSummaryOut(BaseModel):
+    """Resumo de pauta/ensaio na listagem."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    titulo: str
+    modo: str
+    event_id: Optional[str] = None
+    slides_count: int = 0
+    is_demo: bool = False
+    criado_em: datetime
+    atualizado_em: datetime
+
+
+class DeckOut(BaseModel):
+    """Pauta/ensaio completo para renderização no Estúdio ou Live."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    titulo: str
+    modo: str
+    event_id: Optional[str] = None
+    kpis: List[DeckKPI] = Field(default_factory=list)
+    slides: List[DeckSlide] = Field(default_factory=list)
+    charts: List[DeckChartCard] = Field(default_factory=list)
+    ticker_items: List[str] = Field(default_factory=list)
+    is_demo: bool = False
+    criado_em: datetime
+    atualizado_em: datetime
+
+
+class NuanceSuggestRequest(BaseModel):
+    """Entrada para geração/refinamento de nuance de ensaio via llama-server."""
+
+    deck_title: str = Field(default="", max_length=512)
+    slide: DeckSlide
+    angle_hint: str = Field(default="", max_length=400)
+
+
+class NuanceSuggestLLMOutput(BaseModel):
+    """Saída estruturada do LLM para refinar um capítulo do vídeo-ensaio."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    nuance_notes: str = Field(..., min_length=1)
+    summary2: str = Field(..., min_length=1)
+    deep: str = Field(..., min_length=1)

@@ -488,3 +488,256 @@ export function getExportUrl(eventId, format = 'markdown') {
   const base = getApiBase();
   return `${base}/events/${encodeURIComponent(eventId)}/export?format=${encodeURIComponent(format)}`;
 }
+
+function buildDemoDeckFromDossier(d) {
+  const confPct = `${Math.round((d.confidence || 0.83) * 100)}%`;
+  const reg = d.audit_metadata?.articles_registry || [];
+  const palette = ['var(--amber)', 'var(--lime)', 'var(--cyan)'];
+  return {
+    id: 'demo-deck-ensaio-transporte',
+    titulo: `Ensaio: ${d.title}`,
+    modo: 'ensaio',
+    event_id: d.event_id,
+    is_demo: true,
+    criado_em: '2026-10-30T12:00:00Z',
+    atualizado_em: '2026-10-30T12:00:00Z',
+    kpis: [
+      { label: 'Tema:', value: d.theme.toUpperCase(), color: 'var(--crimson)' },
+      { label: 'Coberturas:', value: `${d.coverage_pairs.length} veículos`, color: 'var(--amber)' },
+      { label: 'Citações Verificadas:', value: confPct, color: 'var(--cyan)' },
+      { label: 'Atores:', value: `${d.actors.length} polos`, color: 'var(--lime)' }
+    ],
+    slides: [
+      {
+        shortDate: '01. Fato',
+        timestamp: `${d.location || 'Panorama'} // Âncora Factual`,
+        title: d.title,
+        summary: d.factual_anchor,
+        summary2: d.marxist_leninist_analysis.central_contradiction,
+        deep: d.marxist_leninist_analysis.property_and_power,
+        code: `Confiança verificada: ${confPct} (${reg.length} matérias)`,
+        nuance_notes: 'ABERTURA: Apresentar o núcleo factual antes de expor o recorte de cada veículo.',
+        metricLabel: 'CONFIANÇA VERIFICADA',
+        metricVal: confPct,
+        metricColor: 'var(--cyan)',
+        metricSub: 'Trechos confirmados literalmente nos textos-fonte.',
+        specs: [['Tema', d.theme], ['Local', d.location || '—']],
+        links: reg.slice(0, 2).map((a) => ({ label: a.veiculo.split('—')[0].trim(), url: a.url_canonica }))
+      },
+      ...d.coverage_pairs.map((c, idx) => ({
+        shortDate: `0${idx + 2}. ${c.source.split('—')[0].trim().slice(0, 14)}`,
+        timestamp: c.source_position,
+        title: c.headline,
+        summary: c.central_thesis,
+        summary2: `Efeito político: ${c.political_effect}`,
+        deep: `Omissões prováveis: ${c.likely_omissions.join('; ')}.`,
+        code: c.evidence_quotes[0] ? `Citação: "${c.evidence_quotes[0].quote}"` : '',
+        nuance_notes: `NUANCE: Observar léxico (${c.ideological_vocabulary.slice(0, 3).join(', ')}) e o que foi omitido.`,
+        metricLabel: 'FONTES PRIVILEGIADAS',
+        metricVal: `${c.privileged_sources.length} vozes`,
+        metricColor: palette[idx % palette.length],
+        metricSub: c.privileged_sources.slice(0, 2).join(', '),
+        specs: [['Valoriza', c.valued_actors.slice(0, 2).join(', ') || '—']],
+        links: [{ label: c.source.split('—')[0].trim(), url: c.url }]
+      })),
+      {
+        shortDate: `0${d.coverage_pairs.length + 2}. Síntese`,
+        timestamp: 'Fechamento do Ensaio // Questão Crítica',
+        title: 'Hegemonia, vozes silenciadas e perspectiva estrutural',
+        summary: d.marxist_leninist_analysis.hegemony_and_silenced_voices,
+        summary2: d.marxist_leninist_analysis.strategic_perspective,
+        deep: d.marxist_leninist_analysis.role_of_state,
+        code: d.reader_questions[0] || '',
+        nuance_notes: 'FECHAMENTO: Encerrar com a pergunta crítica na tela para debate.',
+        metricLabel: 'QUESTÃO FINAL',
+        metricVal: 'Síntese',
+        metricColor: 'var(--crimson)',
+        metricSub: d.marxist_leninist_analysis.immediate_demand,
+        specs: [],
+        links: []
+      }
+    ],
+    charts: (d.data_visualizations || []).map((v, idx) => {
+      const max = Math.max(...v.values, 1);
+      return {
+        title: `${idx + 1}. ${v.title}`,
+        subtitle: v.description,
+        rows: v.labels.map((lbl, i) => ({
+          label: lbl.slice(0, 26),
+          pct: Math.round((v.values[i] / max) * 1000) / 10,
+          displayValue: String(v.values[i]),
+          color: ['crimson', 'amber', 'cyan'][i % 3]
+        })),
+        footerTitle: 'Auditoria',
+        footerText: `Baseado em ${v.source_article_ids.length} matéria(s) do evento.`
+      };
+    }),
+    ticker_items: reg.map((a) => `[${a.veiculo.split('—')[0].trim()}] ${a.titulo}`)
+  };
+}
+
+export const DEMO_FALLBACK_DECK = buildDemoDeckFromDossier(DEMO_FALLBACK_DOSSIER);
+
+async function parseApiResponse(res) {
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const err = new Error(body.detail ? (typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail)) : `Erro HTTP ${res.status}`);
+    err.status = res.status;
+    throw err;
+  }
+  return await res.json();
+}
+
+export async function fetchDecks(modo = '') {
+  const base = getApiBase();
+  const q = modo ? `?modo=${encodeURIComponent(modo)}` : '';
+  try {
+    const res = await fetch(`${base}/decks${q}`);
+    return await parseApiResponse(res);
+  } catch {
+    return [
+      {
+        id: DEMO_FALLBACK_DECK.id,
+        titulo: DEMO_FALLBACK_DECK.titulo,
+        modo: DEMO_FALLBACK_DECK.modo,
+        event_id: DEMO_FALLBACK_DECK.event_id,
+        slides_count: DEMO_FALLBACK_DECK.slides.length,
+        is_demo: true,
+        criado_em: DEMO_FALLBACK_DECK.criado_em,
+        atualizado_em: DEMO_FALLBACK_DECK.atualizado_em
+      }
+    ];
+  }
+}
+
+export async function fetchDeck(deckId) {
+  const base = getApiBase();
+  try {
+    const res = await fetch(`${base}/decks/${encodeURIComponent(deckId)}`);
+    return await parseApiResponse(res);
+  } catch {
+    return { ...DEMO_FALLBACK_DECK, id: deckId || DEMO_FALLBACK_DECK.id };
+  }
+}
+
+export async function createDeck(payload) {
+  const res = await fetch(`${getApiBase()}/decks`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  return await parseApiResponse(res);
+}
+
+export async function updateDeck(deckId, payload) {
+  const res = await fetch(`${getApiBase()}/decks/${encodeURIComponent(deckId)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  return await parseApiResponse(res);
+}
+
+export async function deleteDeck(deckId) {
+  const res = await fetch(`${getApiBase()}/decks/${encodeURIComponent(deckId)}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error(`Erro HTTP ${res.status}`);
+}
+
+export async function createDeckFromEvent(eventId) {
+  const res = await fetch(`${getApiBase()}/decks/from-event/${encodeURIComponent(eventId)}`, { method: 'POST' });
+  return await parseApiResponse(res);
+}
+
+export async function createDeckFromLiveFeed({ limit = 10, theme = '' } = {}) {
+  const params = new URLSearchParams({ limit: String(limit) });
+  if (theme) params.set('theme', theme);
+  const res = await fetch(`${getApiBase()}/decks/from-live-feed?${params.toString()}`, { method: 'POST' });
+  return await parseApiResponse(res);
+}
+
+export async function triggerCollectNow() {
+  const res = await fetch(`${getApiBase()}/decks/collect-now`, { method: 'POST' });
+  return await parseApiResponse(res);
+}
+
+export async function suggestSlideNuance({ deck_title = '', slide, angle_hint = '' }) {
+  const res = await fetch(`${getApiBase()}/decks/suggest-nuance`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ deck_title, slide, angle_hint })
+  });
+  return await parseApiResponse(res);
+}
+
+export function createLiveSyncClient({ onMessage, onConnectionChange } = {}) {
+  let bc = null;
+  let ws = null;
+  let closed = false;
+  let retryTimer = null;
+
+  if (typeof BroadcastChannel !== 'undefined') {
+    bc = new BroadcastChannel('contraponto-live-sync');
+    bc.onmessage = (ev) => onMessage && onMessage(ev.data || {});
+  }
+
+  function connectWs() {
+    if (closed || typeof WebSocket === 'undefined') return;
+    const wsUrl = `${getApiBase().replace(/^http/i, 'ws')}/decks/ws/live`;
+    try {
+      ws = new WebSocket(wsUrl);
+      ws.onopen = () => onConnectionChange && onConnectionChange(true);
+      ws.onmessage = (ev) => {
+        try {
+          onMessage && onMessage(JSON.parse(ev.data));
+        } catch {}
+      };
+      ws.onclose = () => {
+        onConnectionChange && onConnectionChange(false);
+        if (!closed) retryTimer = setTimeout(connectWs, 2500);
+      };
+      ws.onerror = () => ws && ws.close();
+    } catch {
+      onConnectionChange && onConnectionChange(false);
+    }
+  }
+
+  connectWs();
+
+  return {
+    send(payload) {
+      if (bc) bc.postMessage(payload);
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(payload));
+      }
+    },
+    close() {
+      closed = true;
+      if (retryTimer) clearTimeout(retryTimer);
+      if (bc) bc.close();
+      if (ws) ws.close();
+    }
+  };
+}
+
+export async function fetchArticles({ limit = 30, theme = '' } = {}) {
+  const base = getApiBase();
+  const params = new URLSearchParams({ limit: String(limit), offset: '0' });
+  if (theme) params.set('theme', theme);
+  try {
+    const res = await fetch(`${base}/articles?${params.toString()}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch {
+    return {
+      total: DEMO_FALLBACK_DOSSIER.audit_metadata.articles_registry.length,
+      items: DEMO_FALLBACK_DOSSIER.audit_metadata.articles_registry.map((a) => ({
+        ...a,
+        resumo: a.titulo
+      }))
+    };
+  }
+}
+
+export function getDeckExportHtmlUrl(deckId) {
+  return `${getApiBase()}/decks/${encodeURIComponent(deckId)}/export-html`;
+}

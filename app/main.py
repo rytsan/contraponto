@@ -12,6 +12,7 @@ from app.scheduler import get_scheduler_status, start_scheduler, stop_scheduler
 from app.analysis.llm_client import LlamaCppClient
 from app.api.routes_analysis import get_llm_client, router as analysis_router
 from app.api.routes_articles import router as articles_router
+from app.api.routes_decks import router as decks_router
 from app.api.routes_dossier import router as dossier_router
 from app.api.routes_events import router as events_router
 from app.api.routes_sources import router as sources_router
@@ -112,3 +113,4 @@ app.include_router(sources_router)
 app.include_router(events_router)
 app.include_router(analysis_router)
 app.include_router(dossier_router)
+app.include_router(decks_router)

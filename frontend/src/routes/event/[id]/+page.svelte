@@ -129,6 +129,21 @@
     on:select={(e) => (currentScene = e.detail)}
   />
 
+  <div class="no-print bg-[#121212] border-b border-[#2b2b2b] px-4 py-2 text-xs font-mono flex flex-wrap items-center justify-end gap-2">
+    <a
+      href={`/studio?from_event=${encodeURIComponent(eventId)}`}
+      class="px-3 py-1 rounded bg-[#161616] text-[#a6ff00] border border-[#a6ff00]/50 hover:bg-[#a6ff00] hover:text-black font-semibold"
+    >
+      ✎ Gerar Ensaio &amp; Nuances no Estúdio
+    </a>
+    <a
+      href="/live"
+      class="px-3 py-1 rounded bg-[#9e1b1b] text-[#f4f1ea] border border-[#e5a93c]/50 hover:bg-[#b52222] font-semibold"
+    >
+      ● Ir para Modo Live (OBS)
+    </a>
+  </div>
+
   {#if analysisJob && (analysisJob.status === 'queued' || analysisJob.status === 'running')}
     <div class="no-print bg-[#161616] border-b border-[#e5a93c]/50 px-4 py-2.5 text-xs font-mono flex items-center justify-between max-w-7xl w-full mx-auto">
       <span class="text-[#e5a93c]">

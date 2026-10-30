@@ -57,21 +57,38 @@
         </p>
       </div>
 
-      <!-- Filtro por Tema -->
-      <div class="flex flex-col gap-1.5">
-        <label for="theme-select" class="font-mono text-[11px] uppercase tracking-wider text-gray-400">
-          Filtrar acontecimentos por tema
-        </label>
-        <select
-          id="theme-select"
-          bind:value={selectedTheme}
-          on:change={loadEvents}
-          class="bg-[#161616] border border-[#2b2b2b] rounded px-3.5 py-2 text-xs font-mono text-[#f4f1ea] focus:outline-none focus:border-[#e5a93c]"
-        >
-          {#each THEMES as t}
-            <option value={t.value}>{t.label}</option>
-          {/each}
-        </select>
+      <!-- Filtro por Tema + Modos Estúdio e Live -->
+      <div class="flex flex-col sm:flex-row sm:items-end gap-3">
+        <div class="flex gap-2">
+          <a
+            href="/studio"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded font-mono text-xs font-bold uppercase tracking-wider bg-[#161616] text-[#a6ff00] border border-[#a6ff00]/60 hover:bg-[#a6ff00] hover:text-black"
+          >
+            ✎ Modo Estúdio (Ensaios)
+          </a>
+          <a
+            href="/live"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded font-mono text-xs font-bold uppercase tracking-wider bg-[#9e1b1b] text-[#f4f1ea] border border-[#e5a93c]/60 hover:bg-[#b52222]"
+          >
+            ● Modo Live (OBS)
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="theme-select" class="font-mono text-[11px] uppercase tracking-wider text-gray-400">
+            Filtrar acontecimentos por tema
+          </label>
+          <select
+            id="theme-select"
+            bind:value={selectedTheme}
+            on:change={loadEvents}
+            class="bg-[#161616] border border-[#2b2b2b] rounded px-3.5 py-2 text-xs font-mono text-[#f4f1ea] focus:outline-none focus:border-[#e5a93c]"
+          >
+            {#each THEMES as t}
+              <option value={t.value}>{t.label}</option>
+            {/each}
+          </select>
+        </div>
       </div>
     </div>
   </header>
@@ -142,13 +159,19 @@
               {/if}
             </div>
 
-            <div class="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-3 shrink-0">
+            <div class="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-2.5 shrink-0">
               <a
                 href={`/event/${ev.id}`}
                 class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded font-mono text-xs font-bold uppercase tracking-wider bg-[#9e1b1b] text-[#f4f1ea] border border-[#e5a93c]/50 hover:bg-[#b52222]"
               >
                 <span>Abrir Dossiê de Contradição</span>
                 <span aria-hidden="true">→</span>
+              </a>
+              <a
+                href={`/studio?from_event=${encodeURIComponent(ev.id)}`}
+                class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded font-mono text-[11px] font-bold uppercase tracking-wider bg-[#121216] text-[#a6ff00] border border-[#a6ff00]/50 hover:bg-[#a6ff00] hover:text-black"
+              >
+                <span>✎ Criar Ensaio no Estúdio</span>
               </a>
             </div>
           </article>
